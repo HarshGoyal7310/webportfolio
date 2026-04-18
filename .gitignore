@@ -1,22 +1,29 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
-/index.html
+/postgresql-installer.exe
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
 ### IntelliJ IDEA ###
-.idea/
+.idea
 *.iws
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
 
 ### VS Code ###
 .vscode/
-
-### Logs ###
-*.log
-
-### Databases ###
-*.db
-*.mysql
