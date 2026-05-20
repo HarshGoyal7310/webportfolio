@@ -1,109 +1,223 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Harsh Goyal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>About | Harsh Goyal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #0f172a;
-            --accent: #3b82f6;
-            --text-muted: #64748b;
-            --bg-light: #f8fafc;
+            --bg: #f8fafc;
+            --surface: rgba(255,255,255,.8);
+            --surface-strong: #ffffff;
+            --border: rgba(148,163,184,.22);
+            --text: #0f172a;
+            --muted: #64748b;
+            --accent: #4f46e5;
+            --shadow: 0 24px 80px rgba(15,23,42,.08);
+        }
+        [data-theme="dark"] {
+            --bg: #0b1120;
+            --surface: rgba(15,23,42,.72);
+            --surface-strong: #111827;
+            --border: rgba(148,163,184,.24);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #6366f1;
+            --shadow: 0 24px 80px rgba(0,0,0,.45);
         }
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--primary);
-            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 45%, #f1f5f9 100%);
+            padding-top: 82px;
             overflow-x: hidden;
-            padding-top: 70px;
         }
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 0;
-            transition: all 0.3s;
+        [data-theme="dark"] body { background: linear-gradient(180deg, #020617 0%, #0b1120 45%, #111827 100%); }
+
+        .animated-bg {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; opacity: .65;
         }
-        .navbar-brand { font-weight: 700; letter-spacing: -1px; font-size: 1.5rem; }
-        .nav-link { color: var(--primary) !important; font-weight: 500; margin: 0 10px; transition: color 0.2s; }
-        .nav-link:hover { color: var(--accent) !important; }
-        .section-padding { padding: 80px 0; }
-        .tech-pill { font-size: 0.75rem; background: #eff6ff; color: var(--accent); padding: 4px 12px; border-radius: 100px; font-weight: 600; margin-right: 8px; margin-bottom: 8px; display: inline-block; }
-        footer { padding: 4rem 0; border-top: 1px solid #e2e8f0; }
-        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); z-index: 1000; transition: transform 0.3s; }
-        .whatsapp-float:hover { transform: scale(1.1); color: white; }
+        .animated-bg span {
+            position: absolute; border-radius: 999px; filter: blur(46px); animation: floatBlob 20s linear infinite;
+        }
+        .animated-bg span:nth-child(1) { width: 280px; height: 280px; left: 4%; top: 8%; background: rgba(99,102,241,.34); }
+        .animated-bg span:nth-child(2) { width: 320px; height: 320px; right: 8%; top: 12%; background: rgba(34,211,238,.3); animation-duration: 22s; }
+        .animated-bg span:nth-child(3) { width: 220px; height: 220px; left: 26%; bottom: 7%; background: rgba(16,185,129,.24); animation-duration: 24s; }
+        @keyframes floatBlob {
+            0% { transform: translate3d(0,0,0) scale(1); }
+            25% { transform: translate3d(14px,-18px,0) scale(1.05); }
+            50% { transform: translate3d(-20px,12px,0) scale(.96); }
+            75% { transform: translate3d(12px,16px,0) scale(1.04); }
+            100% { transform: translate3d(0,0,0) scale(1); }
+        }
+
+        .glass {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+        .hero-shell { padding: 30px; }
+        .hero-title { font-size: clamp(2rem, 4vw, 3.8rem); letter-spacing: -1.5px; font-weight: 800; }
+        .lead-copy { color: var(--muted); }
+
+        .avatar-panel {
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.7));
+            border: 1px solid var(--border);
+            padding: 14px;
+        }
+        .avatar-wrap {
+            border-radius: 20px;
+            background: radial-gradient(circle at top, rgba(99,102,241,.15), rgba(34,211,238,.12));
+            min-height: 390px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .avatar-wrap img { width: min(100%, 360px); max-width: 90%; }
+
+        .pill {
+            display: inline-flex; align-items: center; gap: .45rem;
+            padding: .5rem .85rem; border-radius: 999px; background: #eef2ff; color: var(--accent); font-weight: 700; font-size: .86rem;
+        }
+        .section-card {
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 22px;
+            height: 100%;
+        }
+        .section-card p { color: var(--muted); }
+
+        .skill-pill {
+            display: inline-flex; align-items: center;
+            padding: .72rem .95rem; margin: .3rem;
+            border-radius: 999px;
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .timeline-item { border-left: 2px solid rgba(148,163,184,.35); padding-left: 26px; margin-bottom: 18px; position: relative; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -8px; top: 5px;
+            width: 14px; height: 14px; border-radius: 50%; background: var(--accent);
+        }
+
+        .footer-social a {
+            width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 12px; border: 1px solid var(--border); color: var(--text); background: var(--surface-strong);
+            margin: 0 .3rem; text-decoration: none;
+        }
+
+        .whatsapp-float {
+            position: fixed; bottom: 24px; right: 24px; background: #25d366; color: white;
+            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; box-shadow: 0 10px 20px rgba(0,0,0,.18); z-index: 1000;
+        }
+
+        [data-theme="dark"] .avatar-panel {
+            background: linear-gradient(180deg, rgba(17,24,39,.95), rgba(17,24,39,.75));
+        }
+        [data-theme="dark"] .btn-outline-dark {
+            color: #e5e7eb;
+            border-color: rgba(148,163,184,.45);
+        }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <div class="animated-bg" aria-hidden="true"><span></span><span></span><span></span></div>
     <div th:replace="~{header :: navbar}"></div>
 
-    <section class="section-padding">
-        <div class="container">
-            <h1 class="display-4 fw-bold text-center mb-5" data-aos="fade-up">About Me</h1>
-            <div class="row align-items-center g-5">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <p class="lead mb-4">Aspiring B. Tech Computer Science student with a passion for Full Stack Web Development. Proficient in HTML, CSS, JavaScript, PHP, and backend technologies like Java and Spring Boot. Experienced in developing responsive, interactive, and secure web applications.</p>
-                    <p class="text-muted mb-4">Seeking an opportunity to apply my skills in a real-world environment while continuing to learn through practical exposure. Quick learner eager to contribute to dynamic teams while enhancing technical expertise.</p>
-                    <div class="row g-3">
-                        <div class="col-6"><i class="fas fa-check-circle text-primary me-2"></i> Custom Web Apps</div>
-                        <div class="col-6"><i class="fas fa-check-circle text-primary me-2"></i> API Development</div>
-                        <div class="col-6"><i class="fas fa-check-circle text-primary me-2"></i> Database Design</div>
-                        <div class="col-6"><i class="fas fa-check-circle text-primary me-2"></i> Cloud Integration</div>
-                    </div>
-                </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <div class="p-4 bg-light rounded-4 shadow-sm">
-                        <h5 class="fw-bold mb-4">Technical Skills Stack</h5>
-                        <div class="d-flex flex-wrap gap-2">
-                            <span class="tech-pill">Java</span>
-                            <span class="tech-pill">Spring Boot</span>
-                            <span class="tech-pill">PHP</span>
-                            <span class="tech-pill">MySQL</span>
-                            <span class="tech-pill">HTML5/CSS3</span>
-                            <span class="tech-pill">JavaScript</span>
-                            <span class="tech-pill">WebSockets</span>
-                            <span class="tech-pill">Git/GitHub</span>
-                            <span class="tech-pill">Microsoft Office</span>
-                            <span class="tech-pill">VS Code</span>
-                            <span class="tech-pill">IntelliJ IDEA</span>
+    <main class="py-4">
+        <section class="container mb-5">
+            <div class="glass hero-shell">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-7" data-aos="fade-right">
+                        <span class="pill mb-3"><i class="fa-solid fa-user"></i> Dedicated About</span>
+                        <h1 class="hero-title mb-3">About <span th:text="${profileName}">Harsh Goyal</span></h1>
+                        <p class="lead lead-copy mb-4" th:text="${profileSubtitle}">Profile summary</p>
+                        <p class="lead-copy mb-4">
+                            I am focused on full stack web development, backend architecture with Spring Boot,
+                            and building modern interfaces that are responsive, fast, and production-ready.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a th:href="${resumePath}" class="btn btn-primary" target="_blank"><i class="fa-solid fa-file-arrow-down me-2"></i>Resume</a>
+                            <a th:href="${instagramUrl}" class="btn btn-outline-primary" target="_blank"><i class="fa-brands fa-instagram me-2"></i>Instagram</a>
+                            <a th:href="${emailUrl}" class="btn btn-outline-dark" target="_blank"><i class="fa-solid fa-envelope me-2"></i>Email</a>
                         </div>
                     </div>
-                    <div class="mt-4 text-center">
-                        <a href="/resume.pdf" class="btn btn-dark btn-lg" target="_blank">Download Resume <i class="fas fa-file-pdf ms-2"></i></a>
+                    <div class="col-lg-5" data-aos="fade-left">
+                        <div class="avatar-panel">
+                            <div class="avatar-wrap">
+                                <img th:src="${avatarPath}" alt="Profile image">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
+        <section class="container mb-5">
+            <div class="row g-4">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="section-card">
+                        <h4 class="fw-bold mb-3">Core Strengths</h4>
+                        <div th:each="highlight : ${highlights}" class="mb-3">
+                            <strong th:text="${highlight.value}">B.Tech CSE</strong>
+                            <p class="mb-0" th:text="${highlight.label}">Highlight detail</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="80">
+                    <div class="section-card">
+                        <h4 class="fw-bold mb-3">Skills & Tools</h4>
+                        <div>
+                            <span class="skill-pill" th:each="skill : ${skills}" th:text="${skill}">Java</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container mb-5" data-aos="fade-up">
+            <div class="section-card">
+                <h4 class="fw-bold mb-4">Education Timeline</h4>
+                <div class="timeline-item" th:each="edu : ${educationTimeline}">
+                    <strong th:text="${edu.value}">Degree</strong>
+                    <p class="mb-0" th:text="${edu.label}">Institute and year</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <footer class="text-center py-5">
         <div class="container">
-            <div class="mb-4">
-                <a href="https://github.com/HarshGoyal7310" class="text-dark mx-3" target="_blank"><i class="fab fa-github fa-xl"></i></a>
-                <a href="https://linkedin.com/in/harshgoyal2002" class="text-dark mx-3" target="_blank"><i class="fab fa-linkedin fa-xl"></i></a>
-                <a href="mailto:harshgoyal7310@gmail.com" class="text-dark mx-3"><i class="fas fa-envelope fa-xl"></i></a>
+            <div class="footer-social mb-3">
+                <a th:href="${githubUrl}" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a th:href="${linkedinUrl}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                <a th:href="${instagramUrl}" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a th:href="${emailUrl}" target="_blank"><i class="fa-solid fa-envelope"></i></a>
             </div>
             <p class="text-muted small mb-0">&copy; 2026 Harsh Goyal. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/917310662063" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/917310662063" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        AOS.init({ duration: 900, once: true, offset: 80 });
     </script>
 </body>
 </html>

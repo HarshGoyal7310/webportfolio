@@ -5,13 +5,23 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/about}">About</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/experience}">Experience</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/projects}">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/#services}">Services</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/education}">Education</a></li>
-                <li class="nav-item ms-lg-4">
-                    <a class="btn btn-primary text-white px-4" th:href="@{/#contact}">Contact Me</a>
+                <li class="nav-item ms-lg-2">
+                    <button id="themeToggle" type="button" class="btn btn-outline-secondary px-3 theme-toggle-btn" aria-label="Toggle dark mode">
+                        <i class="fa-regular fa-moon"></i>
+                    </button>
+                </li>
+                <li class="nav-item d-none d-lg-block ms-lg-3">
+                    <a class="btn btn-outline-primary px-4 resume-btn" th:href="@{/resume.pdf}" target="_blank">Resume</a>
+                </li>
+                <li class="nav-item ms-lg-2">
+                    <a class="btn btn-primary text-white px-4 contact-btn" th:href="@{/#contact}">Contact</a>
                 </li>
             </ul>
         </div>

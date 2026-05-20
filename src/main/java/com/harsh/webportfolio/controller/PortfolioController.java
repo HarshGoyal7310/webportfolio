@@ -1,33 +1,74 @@
 package com.harsh.webportfolio.controller;
 
 import com.harsh.webportfolio.model.ContactMessage;
-import com.harsh.webportfolio.model.Project;
 import com.harsh.webportfolio.repository.ContactRepository;
+import com.harsh.webportfolio.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class PortfolioController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PortfolioController.class);
+
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private PortfolioService portfolioService;
+
+    @Value("${portfolio.profile.name}")
+    private String profileName;
+    @Value("${portfolio.profile.title}")
+    private String profileTitle;
+    @Value("${portfolio.profile.subtitle}")
+    private String profileSubtitle;
+    @Value("${portfolio.resume.path}")
+    private String resumePath;
+    @Value("${portfolio.social.instagram.url}")
+    private String instagramUrl;
+    @Value("${portfolio.social.github.url}")
+    private String githubUrl;
+    @Value("${portfolio.social.linkedin.url}")
+    private String linkedinUrl;
+    @Value("${portfolio.social.email.url}")
+    private String emailUrl;
+    @Value("${portfolio.contact.phone}")
+    private String phoneNumber;
+    @Value("${portfolio.avatar.path}")
+    private String avatarPath;
+
 
     @GetMapping("/")
     public String index(Model model) {
         if (!model.containsAttribute("contactMessage")) {
             model.addAttribute("contactMessage", new ContactMessage());
         }
+        populateSharedProfile(model);
+        // Removed extra data attributes as they are no longer displayed on index.html
+        // model.addAttribute("skills", portfolioService.getSkills());
+        // model.addAttribute("stats", portfolioService.getStats());
+        // model.addAttribute("highlights", portfolioService.getHighlights());
+        // model.addAttribute("testimonials", portfolioService.getTestimonials());
+        // model.addAttribute("certificates", portfolioService.getCertificates());
+        // model.addAttribute("educationTimeline", portfolioService.getEducationTimeline());
+        // model.addAttribute("services", portfolioService.getServices());
         return "index";
     }
 
     @GetMapping("/about")
-    public String about() {
+    public String about(Model model) {
+        populateSharedProfile(model);
+        model.addAttribute("skills", portfolioService.getSkills());
+        model.addAttribute("highlights", portfolioService.getHighlights());
+        model.addAttribute("educationTimeline", portfolioService.getEducationTimeline());
         return "about";
     }
 
@@ -38,7 +79,7 @@ public class PortfolioController {
 
     @GetMapping("/projects")
     public String projects(Model model) {
-        model.addAttribute("projects", getProjects());
+        model.addAttribute("projects", portfolioService.getProjects());
         return "projects-list";
     }
 
@@ -58,41 +99,28 @@ public class PortfolioController {
             contactRepository.save(contactMessage);
             redirectAttributes.addFlashAttribute("success", "Message received! I'll contact you at " + contactMessage.getEmail() + " shortly.");
         } catch (Exception e) {
+            logger.error("Error submitting contact message: {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("error", "Technical error occurred. Please try again or email me directly.");
         }
         return "redirect:/#contact";
     }
 
-    // Secure Admin Route (Spring Security will handle authentication)
     @GetMapping("/admin/messages")
     public String viewMessages(Model model) {
         model.addAttribute("messages", contactRepository.findAll());
         return "admin-messages";
     }
 
-    private List<Project> getProjects() {
-        return Arrays.asList(
-            new Project("Complaint & Stock Management System (SECL)", 
-                "Developed for SECL to manage industrial complaints and inventory with real-time updates.", 
-                "HTML, CSS, JavaScript, PHP, MySQL", 
-                "Role-based dashboards, Encrypted authentication, Auto-generated IDs", 
-                "Secure Web Portal Architecture", 
-                "Improved operational efficiency for South Eastern Coalfields Ltd.", 
-                "https://github.com/HarshGoyal7310/Complaint-and-Stock-Management-System-SECL", "#"),
-            new Project("Real-time Chat Host", 
-                "A WebSocket-based chat application enabling seamless real-time communication.", 
-                "HTML, CSS, JavaScript, WebSocket", 
-                "Real-time message sync, Responsive cross-device design", 
-                "Client-Server WebSocket Architecture", 
-                "Successfully handled concurrent connections.", 
-                "https://github.com/HarshGoyal7310", "#"),
-            new Project("Personality Development Website", 
-                "A dynamic infographic platform with interactive UI elements.", 
-                "HTML, CSS, JavaScript", 
-                "Interactive Infographics, Multi-device compatibility", 
-                "Frontend Optimized Responsive Design", 
-                "Enhanced user engagement through interactive visuals.", 
-                "https://github.com/HarshGoyal7310/Personality-Development", "#")
-        );
+    private void populateSharedProfile(Model model) {
+        model.addAttribute("profileName", profileName);
+        model.addAttribute("profileTitle", profileTitle);
+        model.addAttribute("profileSubtitle", profileSubtitle);
+        model.addAttribute("resumePath", resumePath);
+        model.addAttribute("instagramUrl", instagramUrl);
+        model.addAttribute("githubUrl", githubUrl);
+        model.addAttribute("linkedinUrl", linkedinUrl);
+        model.addAttribute("emailUrl", emailUrl);
+        model.addAttribute("phoneNumber", phoneNumber);
+        model.addAttribute("avatarPath", avatarPath); // Keep avatarPath for other pages if needed, or remove if not used anywhere else
     }
 }

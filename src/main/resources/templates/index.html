@@ -1,232 +1,472 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harsh Goyal | Full Stack Web Developer</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <title th:text="${profileName + ' | ' + profileTitle}">Harsh Goyal | Full Stack Web Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #0f172a;
-            --accent: #3b82f6;
-            --text-muted: #64748b;
-            --bg-light: #f8fafc;
+            --bg: #f8fafc;
+            --surface: rgba(255,255,255,.78);
+            --surface-strong: #ffffff;
+            --border: rgba(148,163,184,.22);
+            --text: #0f172a;
+            --muted: #64748b;
+            --accent: #4f46e5;
+            --accent-2: #06b6d4;
+            --shadow: 0 24px 80px rgba(15,23,42,.08);
         }
 
+        [data-theme="dark"] {
+            --bg: #0b1120;
+            --surface: rgba(15,23,42,.72);
+            --surface-strong: #111827;
+            --border: rgba(148,163,184,.24);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #6366f1;
+            --accent-2: #22d3ee;
+            --shadow: 0 24px 80px rgba(0,0,0,.45);
+        }
+
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--primary);
-            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 40%, #f1f5f9 100%);
             overflow-x: hidden;
-            padding-top: 70px; /* Offset for sticky navbar */
+            padding-top: 82px;
         }
 
-        /* Navbar Customization */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 0;
-            transition: all 0.3s;
+        [data-theme="dark"] body {
+            background: linear-gradient(180deg, #020617 0%, #0b1120 45%, #111827 100%);
         }
-        .navbar-brand { font-weight: 700; letter-spacing: -1px; font-size: 1.5rem; }
-        .nav-link { color: var(--primary) !important; font-weight: 500; margin: 0 10px; transition: color 0.2s; }
+
+        .animated-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: .65;
+        }
+        .animated-bg span {
+            position: absolute;
+            display: block;
+            border-radius: 999px;
+            filter: blur(46px);
+            animation: floatBlob 18s linear infinite;
+        }
+        .animated-bg span:nth-child(1) { width: 280px; height: 280px; left: 3%; top: 8%; background: rgba(99,102,241,.34); }
+        .animated-bg span:nth-child(2) { width: 320px; height: 320px; right: 8%; top: 12%; background: rgba(34,211,238,.3); animation-duration: 22s; }
+        .animated-bg span:nth-child(3) { width: 220px; height: 220px; left: 25%; bottom: 6%; background: rgba(16,185,129,.22); animation-duration: 20s; }
+        .animated-bg span:nth-child(4) { width: 260px; height: 260px; right: 18%; bottom: 4%; background: rgba(168,85,247,.24); animation-duration: 24s; }
+
+        @keyframes floatBlob {
+            0% { transform: translate3d(0,0,0) scale(1); }
+            25% { transform: translate3d(16px,-20px,0) scale(1.05); }
+            50% { transform: translate3d(-22px,14px,0) scale(0.95); }
+            75% { transform: translate3d(14px,18px,0) scale(1.04); }
+            100% { transform: translate3d(0,0,0) scale(1); }
+        }
+
+        .navbar {
+            background: rgba(255,255,255,.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(148,163,184,.18);
+        }
+        .navbar-brand { font-weight: 800; letter-spacing: -1px; }
+        .nav-link { font-weight: 500; color: var(--text) !important; }
         .nav-link:hover { color: var(--accent) !important; }
 
-        /* Hero Section */
         .hero {
-            padding: 120px 0 100px;
-            background: radial-gradient(circle at top right, #eff6ff 0%, #ffffff 100%);
+            position: relative;
+            padding: 88px 0 56px;
         }
-        .hero h1 { font-size: 4rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 1.5rem; }
-        .hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2.5rem; }
-        .hero-btns .btn { padding: 12px 32px; font-weight: 600; border-radius: 8px; transition: all 0.3s; }
-        .btn-primary { background: var(--accent); border: none; }
-        .btn-primary:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3); }
+        .hero::before,
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: auto;
+            border-radius: 999px;
+            filter: blur(24px);
+            opacity: .35;
+            z-index: 0;
+        }
+        .hero::before { width: 260px; height: 260px; background: #c7d2fe; top: 18px; right: -80px; }
+        .hero::after { width: 220px; height: 220px; background: #99f6e4; bottom: 0; left: -80px; }
 
-        /* Value Section */
-        .value-card { padding: 3rem; border-radius: 24px; background: white; border: 1px solid #e2e8f0; transition: 0.3s; height: 100%; }
-        .value-card:hover { border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .icon-box { width: 60px; height: 60px; background: #eff6ff; color: var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .hero-shell,
+        .glass-card,
+        .section-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+        }
 
-        /* Contact Section Box */
-        .contact-box { background: var(--primary); color: white; border-radius: 24px; padding: 4rem; }
-        .form-control { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px 16px; border-radius: 8px; }
-        .form-control:focus { background: rgba(255,255,255,0.1); border-color: var(--accent); box-shadow: none; color: white; }
+        .hero-shell { padding: 28px; position: relative; z-index: 1; }
+        .hero-copy { padding: 20px 12px; }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .55rem .95rem;
+            border-radius: 999px;
+            background: rgba(79,70,229,.08);
+            color: var(--accent);
+            font-size: .9rem;
+            font-weight: 700;
+        }
 
-        /* Floating Button */
-        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); z-index: 1000; transition: transform 0.3s; }
-        .whatsapp-float:hover { transform: scale(1.1); color: white; }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5.8rem);
+            line-height: .95;
+            letter-spacing: -3px;
+            font-weight: 800;
+            margin: 1.2rem 0 1rem;
+        }
+        .hero p.lead-copy {
+            max-width: 54rem;
+            color: var(--muted);
+            font-size: clamp(1.02rem, 2vw, 1.2rem);
+        }
 
-        footer { padding: 4rem 0; border-top: 1px solid #e2e8f0; }
-        .contact-link { color: white; text-decoration: none; transition: opacity 0.2s; }
-        .contact-link:hover { opacity: 0.8; color: #3b82f6; }
+        .cta-row .btn {
+            padding: 14px 22px;
+            border-radius: 14px;
+            font-weight: 700;
+        }
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent) 0%, #2563eb 100%);
+            border: none;
+            color: #fff;
+        }
+        .btn-accent:hover { transform: translateY(-2px); color: #fff; }
 
-        /* Timeline */
-        .timeline-item { border-left: 2px solid #e2e8f0; padding-left: 30px; position: relative; padding-bottom: 40px; }
-        .timeline-item::before { content: ''; position: absolute; width: 16px; height: 16px; background: var(--accent); border: 4px solid white; border-radius: 50%; left: -9px; top: 0; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        .social-stack a {
+            width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 14px; border: 1px solid rgba(148,163,184,.25); background: white; color: var(--text);
+            transition: .25s ease;
+        }
+        .social-stack a:hover { transform: translateY(-3px); color: white; background: var(--accent); border-color: var(--accent); }
 
-        .admin-secret { color: inherit; text-decoration: none; cursor: default; }
-        .admin-secret:hover { color: inherit; }
+        .hero-card {
+            padding: 18px;
+            border-radius: 30px;
+            background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
+            border: 1px solid rgba(148,163,184,.18);
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 1;
+        }
+        .avatar-wrap {
+            position: relative;
+            background: radial-gradient(circle at top, rgba(79,70,229,.15), rgba(6,182,212,.08));
+            border-radius: 26px;
+            overflow: hidden;
+            min-height: 430px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .avatar-wrap img {
+            width: min(100%, 380px);
+            max-width: 90%;
+            height: auto;
+            filter: drop-shadow(0 30px 50px rgba(15,23,42,.18));
+        }
+        .hero-badge {
+            position: absolute;
+            padding: .8rem 1rem;
+            border-radius: 18px;
+            background: rgba(255,255,255,.9);
+            border: 1px solid rgba(148,163,184,.18);
+            box-shadow: 0 12px 34px rgba(15,23,42,.08);
+            font-size: .92rem;
+        }
+        .badge-top { top: 18px; left: 18px; }
+        .badge-bottom { bottom: 18px; right: 18px; }
+
+        .section-title {
+            max-width: 720px;
+            margin: 0 auto 28px;
+        }
+        .section-title h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            letter-spacing: -1.5px;
+            font-weight: 800;
+        }
+        .section-title p { color: var(--muted); }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: 0 14px 40px rgba(15,23,42,.06);
+        }
+        .stat-card .value { font-size: 1.9rem; font-weight: 800; color: var(--accent); }
+        .stat-card .label { color: var(--muted); font-size: .95rem; }
+
+        .section-card { padding: 28px; }
+        .service-card {
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: 0 14px 34px rgba(15,23,42,.06);
+            height: 100%;
+        }
+        .service-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(79,70,229,.1);
+            color: var(--accent);
+            margin-bottom: .9rem;
+        }
+        .service-card p { color: var(--muted); margin-bottom: 0; }
+        .section-soft { background: rgba(255,255,255,.7); }
+        .pill {
+            display: inline-flex; align-items: center; gap: .4rem;
+            padding: .5rem .85rem; border-radius: 999px; background: #eef2ff; color: var(--accent); font-weight: 700; font-size: .86rem;
+        }
+        .highlight-list .item {
+            background: #fff; border: 1px solid var(--border); border-radius: 18px; padding: 18px;
+        }
+        .highlight-list .item strong { display:block; margin-bottom:.15rem; }
+        .highlight-list .item span { color: var(--muted); font-size: .95rem; }
+
+        .skill-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: .8rem 1rem;
+            margin: .35rem;
+            border-radius: 999px;
+            background: white;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 28px rgba(15,23,42,.05);
+            font-weight: 600;
+        }
+
+        .project-card {
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            height: 100%;
+            box-shadow: 0 18px 40px rgba(15,23,42,.05);
+            transition: .25s ease;
+        }
+        .project-card:hover { transform: translateY(-6px); }
+        .project-media {
+            height: 180px;
+            background: linear-gradient(135deg, #c7d2fe, #99f6e4);
+            display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;
+        }
+        .project-card .body { padding: 22px; }
+
+        .timeline-item { border-left: 2px solid #e2e8f0; padding-left: 30px; position: relative; padding-bottom: 34px; }
+        .timeline-item::before { content: ''; position: absolute; width: 16px; height: 16px; background: var(--accent); border: 4px solid white; border-radius: 50%; left: -9px; top: 0; box-shadow: 0 0 0 4px rgba(79,70,229,.12); }
+
+        [data-theme="dark"] .timeline-item { border-left-color: rgba(148,163,184,.35); }
+        [data-theme="dark"] .timeline-item::before { border-color: var(--surface-strong); }
+
+        .testimonial-card,
+        .certificate-card,
+        .edu-card {
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: 0 14px 40px rgba(15,23,42,.07);
+            height: 100%;
+        }
+        .testimonial-card p,
+        .certificate-card p,
+        .edu-card p { color: var(--muted); margin-bottom: 0; }
+        .quote-icon { color: var(--accent); font-size: 1.4rem; }
+
+        .contact-box {
+            background: linear-gradient(135deg, #0f172a 0%, #111827 60%, #1e293b 100%);
+            color: white;
+            border-radius: 30px;
+            padding: clamp(2rem, 5vw, 4rem);
+            box-shadow: var(--shadow);
+        }
+        .contact-link { color: white; text-decoration: none; }
+        .contact-link:hover { color: #c7d2fe; }
+        .form-control { border-radius: 14px; padding: 14px 16px; }
+        [data-theme="dark"] .form-control { background: rgba(255,255,255,.06); color: #fff; border-color: rgba(148,163,184,.25); }
+
+        footer { padding: 4rem 0 2rem; }
+        .footer-social a {
+            width: 46px; height: 46px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 14px; background: white; border: 1px solid var(--border); color: var(--text);
+            margin: 0 .35rem; text-decoration: none;
+        }
+
+        [data-theme="dark"] .social-stack a,
+        [data-theme="dark"] .hero-card,
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .highlight-list .item,
+        [data-theme="dark"] .skill-pill,
+        [data-theme="dark"] .footer-social a,
+        [data-theme="dark"] .section-soft {
+            background: var(--surface-strong);
+            color: var(--text);
+        }
+
+        .admin-secret { color: inherit; text-decoration: none; }
+
+        @media (max-width: 991px) {
+            .hero { padding-top: 40px; }
+            .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 575px) {
+            body { padding-top: 76px; }
+            .stat-grid { grid-template-columns: 1fr; }
+            .hero-shell { padding: 18px; }
+            .avatar-wrap { min-height: 340px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
+    <div class="animated-bg" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+    </div>
+
     <div th:replace="~{header :: navbar}"></div>
 
-    <!-- Hero -->
-    <section class="hero text-center">
-        <div class="container" data-aos="fade-up">
-            <span class="badge rounded-pill mb-3 px-3 py-2 fw-semibold" style="background: #e0e7ff; color: #3b82f6;">Open for Full Stack Opportunities</span>
-            <h1>Turning Complex Logic <br> Into <span style="color: #3b82f6 !important">Elegant Web Solutions</span></h1>
-            <p>I'm Harsh Goyal, a Full Stack Developer specializing in building high-performance Java Spring Boot and PHP applications.</p>
-            <div class="hero-btns d-flex justify-content-center gap-3">
-                <a th:href="@{/projects}" class="btn btn-primary text-white btn-lg">Explore My Work</a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=harshgoyal7310@gmail.com" target="_blank" class="btn btn-outline-dark btn-lg">Get In Touch</a>
-            </div>
-        </div>
-    </section>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-shell">
+                    <div class="row align-items-center g-4 g-lg-5">
+                        <div class="col-lg-12" data-aos="fade-right">
+                            <span class="eyebrow"><i class="fa-solid fa-sparkles"></i> Open for internships, freelance and full-time roles</span>
+                            <div class="hero-copy">
+                                <p class="text-uppercase text-muted fw-semibold small mb-2" th:text="${profileTitle}">Full Stack Web Developer</p>
+                                <h1>
+                                    From <span style="color: var(--accent)">idea to deploy</span>,
+                                    I build fast.
+                                </h1>
+                                <p class="lead-copy mb-4">
+                                    I'm <strong th:text="${profileName}">Harsh Goyal</strong>, a full stack web developer focused on Spring Boot, MySQL,
+                                    responsive UI, and secure application development. I enjoy turning ideas into polished products.
+                                </p>
 
-    <!-- Why Work With Me -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="fw-bold">Why Hire Me?</h2>
-                <p class="text-muted">I bring technical expertise and a business-first mindset to every project.</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4" data-aos="fade-up">
-                    <div class="value-card">
-                        <div class="icon-box"><i class="fas fa-layer-group"></i></div>
-                        <h5 class="fw-bold">Scalable Architecture</h5>
-                        <p class="text-muted small">I build systems that grow with your business, focusing on clean code and robust backend logic.</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="value-card">
-                        <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
-                        <h5 class="fw-bold">Security First</h5>
-                        <p class="text-muted small">From encrypted authentication to secure API endpoints, I ensure your user data is always protected.</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="value-card">
-                        <div class="icon-box"><i class="fas fa-mobile-alt"></i></div>
-                        <h5 class="fw-bold">Responsive Design</h5>
-                        <p class="text-muted small">Your application will look and perform beautifully on every device, from desktop to smartphone.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                                <div class="cta-row d-flex flex-wrap gap-3 mb-4">
+                                    <a th:href="@{/projects}" class="btn btn-accent text-white">
+                                        <i class="fa-solid fa-folder-open me-2"></i>View Projects
+                                    </a>
+                                    <a th:href="${resumePath}" class="btn btn-outline-dark">
+                                        <i class="fa-solid fa-file-arrow-down me-2"></i>Download Resume
+                                    </a>
+                                    <a href="#contact" class="btn btn-outline-primary">
+                                        <i class="fa-solid fa-paper-plane me-2"></i>Contact Me
+                                    </a>
+                                </div>
 
-    <!-- Professional Experience -->
-    <section id="experience" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="fw-bold">My Experience</h2>
-                <div style="width: 50px; height: 4px; background: var(--accent); margin: 1rem auto;"></div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="timeline-item" data-aos="fade-up">
-                        <h5 class="fw-bold mb-1">Full Stack Developer Intern</h5>
-                        <p class="text-primary fw-bold small mb-2">SECL (South Eastern Coalfields Ltd.) | Aug 2025</p>
-                        <p class="text-muted small">Developed a secure, web-based portal for complaint and inventory management. Implemented role-based dashboards and real-time status updates using PHP and MySQL, improving operational efficiency for a major industrial organization.</p>
-                    </div>
-                    <div class="timeline-item" data-aos="fade-up">
-                        <h5 class="fw-bold mb-1">Independent Web Consultant</h5>
-                        <p class="text-primary fw-bold small mb-2">Freelance | 2023 - Present</p>
-                        <p class="text-muted small">Designing and deploying custom web solutions for local businesses, focusing on responsive UI and robust Spring Boot backends.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="py-5">
-        <div class="container">
-            <div class="contact-box" data-aos="zoom-in">
-                <div class="row align-items-center g-5">
-                    <div class="col-lg-5">
-                        <h2 class="display-5 fw-bold mb-4 text-white">Let's build <br> something great.</h2>
-                        <p class="opacity-75 mb-5 text-white">I'm currently available for new projects and internship opportunities. Let's discuss how I can help your team.</p>
-
-                        <div th:if="${success}" class="alert alert-success border-0 py-3 mb-4" th:text="${success}"></div>
-                        <div th:if="${error}" class="alert alert-danger border-0 py-3 mb-4" th:text="${error}"></div>
-
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="rounded-circle p-3 me-3" style="background: rgba(255,255,255,0.1)">
-                                <i class="fas fa-phone text-white"></i>
-                            </div>
-                            <div>
-                                <div class="opacity-50 small text-white">Call Me</div>
-                                <div class="fw-bold text-white"><a href="tel:+917310662063" class="contact-link">+91-7310662063</a></div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="rounded-circle p-3 me-3" style="background: rgba(255,255,255,0.1)">
-                                <i class="fas fa-envelope text-white"></i>
-                            </div>
-                            <div>
-                                <div class="opacity-50 small text-white">Email Me</div>
-                                <div class="fw-bold text-white"><a href="https://mail.google.com/mail/?view=cm&fs=1&to=harshgoyal7310@gmail.com" target="_blank" class="contact-link">harshgoyal7310@gmail.com</a></div>
+                                <div class="d-flex flex-wrap align-items-center gap-3">
+                                    <div class="social-stack d-flex flex-wrap gap-2">
+                                        <a th:href="${githubUrl}" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                                        <a th:href="${linkedinUrl}" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                                        <a th:href="${instagramUrl}" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                                        <a th:href="${emailUrl}" target="_blank" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+                                    </div>
+                                    <div class="text-muted small">
+                                        <i class="fa-solid fa-location-dot me-1"></i> India • Available remotely
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-7">
-                        <form th:action="@{/contact}" th:object="${contactMessage}" method="POST">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <input type="text" th:field="*{name}" class="form-control" placeholder="Your Name" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="email" th:field="*{email}" class="form-control" placeholder="Your Email" required>
-                                </div>
-                                <div class="col-lg-12">
-                                    <textarea th:field="*{message}" class="form-control" rows="4" placeholder="Your Message" required></textarea>
-                                </div>
-                                <div class="col-lg-12">
-                                    <button type="submit" class="btn btn-primary text-white w-100 py-3 fw-bold shadow">Send Message Now</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-5">
+            <div class="container">
+                <div class="contact-box" data-aos="zoom-in">
+                    <div class="row g-5 align-items-center">
+                        <div class="col-lg-5">
+                            <span class="pill mb-3" style="background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.15)"><i class="fa-solid fa-paper-plane"></i> Contact</span>
+                            <h2 class="display-5 fw-bold mb-3">Let’s build something great.</h2>
+                            <p class="text-white-50 mb-4">Available for internships, freelance work, and full-time roles. Reach out if you want a portfolio that feels modern and recruiter-friendly.</p>
+
+                            <div th:if="${success}" class="alert alert-success border-0 py-3 mb-3" th:text="${success}"></div>
+                            <div th:if="${error}" class="alert alert-danger border-0 py-3 mb-3" th:text="${error}"></div>
+
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="rounded-circle p-3 me-3" style="background: rgba(255,255,255,0.1)"><i class="fas fa-phone text-white"></i></div>
+                                <div>
+                                    <div class="text-white-50 small">Call Me</div>
+                                    <div class="fw-bold text-white"><a th:href="${'tel:' + phoneNumber}" class="contact-link" th:text="${phoneNumber}">+91-7310662063</a></div>
                                 </div>
                             </div>
-                        </form>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="rounded-circle p-3 me-3" style="background: rgba(255,255,255,0.1)"><i class="fas fa-envelope text-white"></i></div>
+                                <div>
+                                    <div class="fw-bold text-white"><a th:href="${emailUrl}" target="_blank" class="contact-link">harshgoyal7310@gmail.com</a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <form th:action="@{/contact}" th:object="${contactMessage}" method="POST">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="visually-hidden" for="name">Your Name</label>
+                                        <input id="name" type="text" th:field="*{name}" class="form-control" placeholder="Your Name" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="visually-hidden" for="email">Your Email</label>
+                                        <input id="email" type="email" th:field="*{email}" class="form-control" placeholder="Your Email" required>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="visually-hidden" for="message">Your Message</label>
+                                        <textarea id="message" th:field="*{message}" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                                    </div>
+                                    <div class="col-lg-12"><button type="submit" class="btn btn-accent text-white w-100 py-3 fw-bold shadow">Send Message</button></div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer -->
-    <footer class="text-center py-5">
+    <footer class="text-center">
         <div class="container">
-            <div class="mb-4">
-                <a href="https://github.com/HarshGoyal7310" class="text-dark mx-3" target="_blank"><i class="fab fa-github fa-xl"></i></a>
-                <a href="https://linkedin.com/in/harshgoyal2002" class="text-dark mx-3" target="_blank"><i class="fab fa-linkedin fa-xl"></i></a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=harshgoyal7310@gmail.com" target="_blank" class="text-dark mx-3"><i class="fas fa-envelope fa-xl"></i></a>
+            <div class="footer-social mb-3">
+                <a th:href="${githubUrl}" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a th:href="${linkedinUrl}" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a th:href="${instagramUrl}" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a th:href="${emailUrl}" target="_blank"><i class="fa-solid fa-envelope"></i></a>
             </div>
             <p class="text-muted small mb-0">&copy; 2026 <a th:href="@{/admin/messages}" class="admin-secret">Harsh Goyal</a>. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/917310662063" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        AOS.init({ duration: 900, once: true, offset: 80 });
     </script>
 </body>
 </html>

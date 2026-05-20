@@ -28,7 +28,7 @@ A modern, responsive portfolio website built using Java Spring Boot, Thymeleaf (
    ```sql
    CREATE DATABASE portfolio_db;
    ```
-3. Update `src/main/resources/application.properties` with your MySQL username and password:
+3. Update `src/main/resources/application.properties` with your MySQL username and password or set environment variables:
    ```properties
    spring.datasource.username=your_username
    spring.datasource.password=your_password

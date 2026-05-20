@@ -11,19 +11,34 @@
     <style>
         :root {
             --primary: #0f172a;
-            --accent: #3b82f6;
+            --accent: #4f46e5;
             --text-muted: #64748b;
-            --bg-light: #f8fafc;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: rgba(148, 163, 184, 0.25);
         }
-        body { font-family: 'Inter', sans-serif; color: var(--primary); line-height: 1.6; overflow-x: hidden; padding-top: 70px; }
-        .navbar { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; padding: 1rem 0; transition: all 0.3s; }
-        .navbar-brand { font-weight: 700; letter-spacing: -1px; font-size: 1.5rem; }
-        .nav-link { color: var(--primary) !important; font-weight: 500; margin: 0 10px; transition: color 0.2s; }
-        .nav-link:hover { color: var(--accent) !important; }
+        [data-theme="dark"] {
+            --primary: #e5e7eb;
+            --accent: #818cf8;
+            --text-muted: #94a3b8;
+            --bg: #020617;
+            --surface: #111827;
+            --border: rgba(148, 163, 184, 0.28);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--primary);
+            background: var(--bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-top: 82px;
+        }
         .section-padding { padding: 80px 0; }
-        .edu-card { background: white; border-radius: 20px; border: 1px solid #e2e8f0; padding: 2.5rem; margin-bottom: 2rem; transition: all 0.3s; }
+        .edu-card { background: var(--surface); border-radius: 20px; border: 1px solid var(--border); padding: 2.5rem; margin-bottom: 2rem; transition: all 0.3s; }
         .edu-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-color: var(--accent); }
-        footer { padding: 4rem 0; border-top: 1px solid #e2e8f0; }
+        .text-muted { color: var(--text-muted) !important; }
+        footer { padding: 4rem 0; border-top: 1px solid var(--border); }
+        .social-link { color: var(--primary); }
         .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); z-index: 1000; transition: transform 0.3s; }
         .whatsapp-float:hover { transform: scale(1.1); color: white; }
     </style>
@@ -40,21 +55,41 @@
                     <div class="edu-card shadow-sm" data-aos="fade-up">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h3 class="fw-bold mb-0">B.Tech in Computer Science & Engineering</h3>
-                            <span class="badge bg-primary px-3 py-2">2023 - 2026</span>
+                            <span class="badge bg-primary px-3 py-2">2022 - Present</span>
                         </div>
-                        <h5 class="text-primary mb-3">Mahatma Gandhi Mission College of Engineering and Technology</h5>
-                        <p class="text-muted mb-0"><i class="fas fa-map-marker-alt me-2"></i> Noida, Uttar Pradesh</p>
-                        <p class="mt-3">Focused on advanced software engineering principles, algorithm design, and full-stack web development. Actively participating in dynamic technical teams and enhancing expertise through practical exposure.</p>
+                        <h5 class="text-primary mb-3">Mahatma Gandhi Mission College of Engineering and Technology Noida</h5>
+                        <p class="text-muted mb-0"><i class="fas fa-map-marker-alt me-2"></i> Uttar Pradesh AKTU University</p>
+                        <p class="mt-3">Focused on software development, backend systems, and practical full-stack web projects.</p>
                     </div>
 
-                    <div class="edu-card shadow-sm" data-aos="fade-up" data-aos-delay="100">
+                    <div class="edu-card shadow-sm" data-aos="fade-up" data-aos-delay="80">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h3 class="fw-bold mb-0">Polytechnic Diploma in ECE</h3>
-                            <span class="badge bg-primary px-3 py-2">2020 - 2023</span>
+                            <span class="badge bg-primary px-3 py-2">2020 - 2022</span>
                         </div>
-                        <h5 class="text-primary mb-3">Government Polytechnic Saharanpur</h5>
-                        <p class="text-muted mb-0"><i class="fas fa-map-marker-alt me-2"></i> Saharanpur, Uttar Pradesh</p>
-                        <p class="mt-3">Gained strong fundamental knowledge in Electronics and Communication Engineering. Developed a base for logical thinking and technical problem-solving.</p>
+                        <h5 class="text-primary mb-3">Govt. Polytechnic Saharanpur</h5>
+                        <p class="text-muted mb-0"><i class="fas fa-map-marker-alt me-2"></i> Uttar Pradesh BTEUP Board</p>
+                        <p class="mt-3">Built a strong base in electronics, communication fundamentals, and technical problem solving.</p>
+                    </div>
+
+                    <div class="edu-card shadow-sm" data-aos="fade-up" data-aos-delay="160">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="fw-bold mb-0">Class 12 - Science (UP Board)</h3>
+                            <span class="badge bg-primary px-3 py-2">2020</span>
+                        </div>
+                        <h5 class="text-primary mb-3">UP Board</h5>
+                        <p class="text-muted mb-0"><i class="fas fa-map-marker-alt me-2"></i> Uttar Pradesh</p>
+                        <p class="mt-3">Completed higher secondary education in Science stream, strengthening analytical ability and numerical problem-solving.</p>
+                    </div>
+
+                    <div class="edu-card shadow-sm" data-aos="fade-up" data-aos-delay="240">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="fw-bold mb-0">Class 10 - Science (UP Board)</h3>
+                            <span class="badge bg-primary px-3 py-2">2018</span>
+                        </div>
+                        <h5 class="text-primary mb-3">UP Board </h5>
+                        <p class="text-muted mb-0"><i class="fas fa-map-marker-alt me-2"></i> Uttar Pradesh</p>
+                        <p class="mt-3">Built strong academic fundamentals across core science subjects and developed discipline for technical studies.</p>
                     </div>
                 </div>
             </div>
@@ -65,9 +100,9 @@
     <footer class="text-center py-5">
         <div class="container">
             <div class="mb-4">
-                <a href="https://github.com/HarshGoyal7310" class="text-dark mx-3" target="_blank"><i class="fab fa-github fa-xl"></i></a>
-                <a href="https://linkedin.com/in/harshgoyal2002" class="text-dark mx-3" target="_blank"><i class="fab fa-linkedin fa-xl"></i></a>
-                <a href="mailto:harshgoyal7310@gmail.com" class="text-dark mx-3"><i class="fas fa-envelope fa-xl"></i></a>
+                <a href="https://github.com/HarshGoyal7310" class="social-link mx-3" target="_blank"><i class="fab fa-github fa-xl"></i></a>
+                <a href="https://linkedin.com/in/harshgoyal2002" class="social-link mx-3" target="_blank"><i class="fab fa-linkedin fa-xl"></i></a>
+                <a href="mailto:harshgoyal7310@gmail.com" class="social-link mx-3"><i class="fas fa-envelope fa-xl"></i></a>
             </div>
             <p class="text-muted small mb-0">&copy; 2026 Harsh Goyal. All rights reserved.</p>
         </div>
