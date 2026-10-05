@@ -1,13 +1,17 @@
-# Build stage
-FROM maven:3.8.4-openjdk-17-slim AS build
+# Stage 1: Build the Application with Maven & Java 17
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Run stage
-FROM eclipse-temurin:17-jdk-alpine
+# Stage 2: Run the Application
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=build /app/target/webportfolio-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
+
+# Application port
 EXPOSE 8082
+
+# Start command
 ENTRYPOINT ["java", "-jar", "app.jar"]
